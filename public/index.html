@@ -5,23 +5,25 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
     <title>Node Demo</title>
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
-      var socket = io('http://localhost');
-      socket.on('post', function (data) {
+      // io is global
+      var socket = io("http://localhost");
+      socket.on('from_node_event', function (data) {
         var $li = $('<li>');
         $li.text(data.message);
 
-        $('#log').prepend($li);
+        $('#log').append($li);
       });
 
-      $(function () {
+      $(document).ready(function () {
         $('form').on('submit', function (event) {
           event.preventDefault();
           var message = $('textarea').val();
-          socket.emit('message', { message: message });
+          socket.emit('from_browser_event', { message: message });
         });
       });
     </script>
@@ -40,6 +42,7 @@
           </form>
         </div>
         <div class="col-md-5">
+          <h1> Messages! </ul>
           <ul id="log">
           </ul>
         </div>
